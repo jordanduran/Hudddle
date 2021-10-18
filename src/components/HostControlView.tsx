@@ -13,12 +13,16 @@ import React, {useContext} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import chatContext, {controlMessageEnum} from './ChatContext';
 import ColorContext from './ColorContext';
+import PrimaryButton from '../atoms/PrimaryButton';
 import SecondaryButton from '../atoms/SecondaryButton';
 import TextInput from '../atoms/TextInput';
+
+import { PollContext } from './PollContext';
 
 const HostControlView = () => {
   const {sendControlMessage} = useContext(chatContext);
   const {primaryColor} = useContext(ColorContext);
+  const {question, setQuestion, isModalOpen, setIsModalOpen, answers, setAnswers} = useContext(PollContext);
   return (
     <>
       <Text style={style.heading}>Host Controls</Text>
@@ -36,8 +40,18 @@ const HostControlView = () => {
           />
         </View>
         <Text style={style.heading}>Create a Poll</Text>
-        <View>
-          {/* <TextInput value={} onChangeText={} placeholder='Poll Question' /> */}
+        <View style={{marginTop: '20px'}}>
+          <TextInput value={question} onChangeText={setQuestion} placeholder='Poll Question' />
+          <br />
+          {answers.map((answer, i) => (
+            <div key={i}>
+              <br />
+              <TextInput value={answer.option} onChangeText={(value) => setAnswers([...answers.slice(0, i), {option: value}, ...answers.slice(i + 1)])} placeholder={`Poll Answer ${i + 1}`} />
+            </div>
+          ))}
+        </View>
+        <View style={style.btnContainer}>
+            <PrimaryButton onPress={() => {setIsModalOpen(true)}} text='Start Poll' />
         </View>
       </View>
     </>

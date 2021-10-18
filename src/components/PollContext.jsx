@@ -4,9 +4,24 @@ export const PollContext = createContext();
 
 const PollProvider = ({children}) => {
   const [question, setQuestion] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [answers, setAnswers] = useState([
+    {option: '', votes: 0},
+    {option: '', votes: 0},
+    {option: '', votes: 0},
+    {option: '', votes: 0},
+  ]);
 
   return (
-    <PollContext.Provider value={{question, setQuestion}}>
+    <PollContext.Provider
+      value={{
+        question,
+        setQuestion,
+        isModalOpen,
+        setIsModalOpen,
+        answers,
+        setAnswers,
+      }}>
       {children}
     </PollContext.Provider>
   );
